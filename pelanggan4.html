@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛒 Pesan Makanan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body class="max-w-md mx-auto p-4 bg-gray-50">
+<h1 class="text-xl font-bold text-center text-orange-600 mb-4">🍜 DAFTAR MENU MAKANAN</h1>
+<div class="bg-white p-4 rounded-xl shadow">
+  <div id="daftarMenu"><p class="text-center text-gray-500">Memuat menu...</p></div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCqC6XKfXzI3QaM7yW8vR9pQ7Z8xY7w9e8rT7s6a5d4f3g2h1j0k9l8m7n6b5v4c3x2z1",
+  authDomain: "kurir-ongkir.firebaseapp.com",
+  databaseURL: "https://kurir-ongkir-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "kurir-ongkir"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+db.ref('daftarMenu').on('value', snap => {
+  const d = snap.val(), el = document.getElementById('daftarMenu'); el.innerHTML='';
+  if(!d){el.innerHTML='<p class="text-center text-gray-500">Menu belum tersedia</p>';return;}
+  Object.values(d).forEach(i=>el.innerHTML+=`<div class="border-b py-3"><p class="font-bold">${i.nama}</p><p class="text-sm text-gray-600">Warung: ${i.warung}</p><p class="font-bold text-lg text-orange-600 mt-1">Rp ${i.harga.toLocaleString()}</p></div>`);
+});
+</script>
+</body>
+</html>
